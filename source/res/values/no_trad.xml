@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">Infobat</string>
+	<string name="version">1.0</string>
+	<string name="app_name_ver">InfoBat 1.0</string>
+	<string name="app_license">(CC) Creative Commons 2013, JAFS.es</string>
+
+	<string name="intent_info">es.jafs.infobat.INFORMACION</string>
+	<string name="intent_actualiza">es.jafs.infobat.ACTUALIZA</string>
+	<string name="intent_pantalla">es.jafs.infobat.PANTALLA</string>
+
+	<string name="wd_defecto">0</string>
+	<string name="wd_porcentaje">%</string>
+</resources>

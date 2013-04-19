@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:layout_margin="15dp"
+	android:orientation="vertical"
+	android:background="@drawable/fondo">
+
+	<TextView android:text="@string/app_name_ver"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center_horizontal"
+		android:textAppearance="@android:style/TextAppearance.Large"/>
+
+	<TableLayout android:id="@+id/tlDatos"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:stretchColumns="0,1">
+		<TableRow android:layout_width="fill_parent" android:layout_height="wrap_content">
+			<TextView android:text="@string/bat_tecnologia" />
+			<TextView android:id="@+id/tvTecnologia" android:textIsSelectable="true" />
+		</TableRow>
+		<TableRow android:layout_width="fill_parent" android:layout_height="wrap_content">
+			<TextView android:text="@string/bat_nivel" />
+			<TextView android:id="@+id/tvNivel" android:textIsSelectable="true" />
+		</TableRow>
+		<TableRow android:layout_width="fill_parent" android:layout_height="wrap_content">
+			<TextView android:text="@string/bat_enchufada" />
+			<TextView android:id="@+id/tvEnchufada" android:text="@string/bat_con_des" android:textIsSelectable="true"/>
+		</TableRow>
+		<TableRow android:layout_width="fill_parent" android:layout_height="wrap_content" >
+			<TextView android:text="@string/bat_salud" />
+			<TextView android:id="@+id/tvSalud" android:textIsSelectable="true" />
+		</TableRow>
+		<TableRow android:layout_width="fill_parent" android:layout_height="wrap_content" >
+			<TextView android:text="@string/bat_estado" />
+			<TextView android:id="@+id/tvEstado" android:textIsSelectable="true" />
+		</TableRow>
+		<TableRow android:layout_width="fill_parent" android:layout_height="wrap_content" >
+			<TextView android:text="@string/bat_temperatura" />
+			<TextView android:id="@+id/tvTemperatura" android:textIsSelectable="true" />
+		</TableRow>
+		<TableRow android:layout_width="fill_parent" android:layout_height="wrap_content" >
+			<TextView android:text="@string/bat_voltaje" />
+			<TextView android:id="@+id/tvVoltaje" android:textIsSelectable="true" />
+		</TableRow>
+	</TableLayout>
+
+	<TextView android:id="@+id/tvNoPresente"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center_horizontal"
+		android:text="@string/bat_no_presente"
+		android:visibility="gone" />
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:layout_marginTop="10dp"
+		android:text="@string/app_license" />
+
+	<Button android:id="@+id/btnCerrar"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:background="@drawable/boton"
+		android:layout_marginLeft="40dp"
+		android:layout_marginRight="40dp"
+		android:layout_marginTop="10dp"
+		android:text="@string/cerrar" />
+</LinearLayout>
