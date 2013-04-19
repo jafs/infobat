@@ -3,29 +3,25 @@
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
 	android:orientation="horizontal"
+	android:gravity="center"
 	android:background="@drawable/wdg_normal"
 	android:id="@+id/llFondo">
 
 	<TextView
 		android:id="@+id/tvNivelWidget"
-		android:layout_width="fill_parent"
-		android:layout_weight="1"
+		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:gravity="center"
-		android:padding="5dp"
 		android:text="@string/wd_defecto"
 		android:textColor="#FFF"
 		android:textSize="25sp"
 		android:textStyle="bold" />
 
 	<TextView 
-		android:layout_width="fill_parent"
+		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_weight="1"
 		android:textColor="#FFF"
 		android:text="@string/wd_porcentaje"
 		android:gravity="center"
 		android:textStyle="bold"
-		android:textSize="25sp"
-		android:padding="5dp"/>
+		android:textSize="25sp"/>
 </LinearLayout>
