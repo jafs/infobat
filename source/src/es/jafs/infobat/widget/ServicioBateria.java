@@ -155,10 +155,10 @@ public class ServicioBateria extends Service {
 		// TODO revisar código para evitar que se dibuje innecesariamente.
 		if (bConectado) {
 			objVistas.setInt(R.id.llFondo, PROP_FONDO, R.drawable.wdg_carga);
-		} else if (iNivelBateria < Bateria.NVL_WARNING) {
-			objVistas.setInt(R.id.llFondo, PROP_FONDO, R.drawable.wdg_warning);
 		} else if (iNivelBateria < Bateria.NVL_DANGER) {
 			objVistas.setInt(R.id.llFondo, PROP_FONDO, R.drawable.wdg_danger);
+		} else if (iNivelBateria < Bateria.NVL_WARNING) {
+			objVistas.setInt(R.id.llFondo, PROP_FONDO, R.drawable.wdg_warning);
 		} else {
 			objVistas.setInt(R.id.llFondo, PROP_FONDO, R.drawable.wdg_normal);
 		}

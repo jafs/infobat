@@ -18,8 +18,8 @@ public final class Bateria {
 	/** Valor divisor de temperatura. */
 	private static final int DIV_TEMPERATURA = 10;
 	
-	public static final int NVL_DANGER = 5;
-	public static final int NVL_WARNING = 20;
+	public static final int NVL_DANGER = 10;
+	public static final int NVL_WARNING = 30;
 
 	/** Estado de salud de la batería. */
 	private int iSalud = BatteryManager.BATTERY_HEALTH_UNKNOWN;
