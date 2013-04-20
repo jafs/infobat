@@ -15,8 +15,8 @@ import android.content.Intent;
 public class ReceptorBateria extends BroadcastReceiver {
 	/**
 	 * Recibe una notificación de cambio en batería.
-	 * @param contexto Contexto de la aplicación.
-	 * @param intent   Intent con la acción recibida.
+	 * @param objContexto  Contexto de la aplicación.
+	 * @param objIntent    Intent con la acción recibida.
 	 */
 	@Override
 	public void onReceive(final Context objContexto, final Intent objIntent) {

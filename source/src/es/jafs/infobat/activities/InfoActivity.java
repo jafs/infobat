@@ -73,6 +73,9 @@ public class InfoActivity extends Activity {
 	}
 
 
+	/**
+	 * Desactiva el receptor broadcast al cerrar la actividad.
+	 */
 	@Override
 	protected void onStop() {
 		if (null != objReceptor) {
@@ -88,7 +91,7 @@ public class InfoActivity extends Activity {
 	 * @param  sTexto    Texto a establecer.
 	 */
 	private void setTexto(final int iControl, final String sTexto) {
-		TextView tvTexto = (TextView) findViewById(iControl);
+		final TextView tvTexto = (TextView) findViewById(iControl);
 		if (null != tvTexto) {
 			tvTexto.setText(sTexto);
 		}
@@ -101,14 +104,8 @@ public class InfoActivity extends Activity {
 	 */
 	public final void onCambio(final Bateria objBateria) {
 		if (null != objBateria && objBateria.isPresente()) {
-			final StringBuilder objTexto = new StringBuilder();
-
-			if (View.VISIBLE != tlDatos.getVisibility()) {
-				tlDatos.setVisibility(View.VISIBLE);
-			}
-			if (View.VISIBLE == tvNoPresent.getVisibility()) {
-				tvNoPresent.setVisibility(View.INVISIBLE);
-			}
+			tlDatos.setVisibility(View.VISIBLE);
+			tvNoPresent.setVisibility(View.INVISIBLE);
 	
 			// Campos sencillos
 			// ----------------
@@ -120,6 +117,7 @@ public class InfoActivity extends Activity {
 			// Campos complejos
 			// ----------------
 			// Nivel de la batería.
+			final StringBuilder objTexto = new StringBuilder();
 			objTexto.append(objBateria.getNivel());
 			objTexto.append('%');
 			setTexto(R.id.tvNivel, objTexto.toString());
@@ -138,12 +136,8 @@ public class InfoActivity extends Activity {
 			objTexto.append(" V");
 			setTexto(R.id.tvVoltaje, objTexto.toString());
 		} else {
-			if (View.VISIBLE == tlDatos.getVisibility()) {
-				tlDatos.setVisibility(View.INVISIBLE);
-			}
-			if (View.VISIBLE != tvNoPresent.getVisibility()) {
-				tvNoPresent.setVisibility(View.VISIBLE);
-			}
+			tlDatos.setVisibility(View.INVISIBLE);
+			tvNoPresent.setVisibility(View.VISIBLE);
 		}
 	}
 
@@ -158,7 +152,8 @@ public class InfoActivity extends Activity {
 	 */
 	class Receptor extends BroadcastReceiver {
 		/** Objeto con la información de la batería. */
-		private Bateria objBateria = new Bateria();
+		private final Bateria objBateria = new Bateria();
+
 		/** Escala de control de valores de batería. */
 		private int iEscala = Bateria.I_ESCALA;
 		/** Indica si se debe realizar la carga inicial. */
@@ -167,8 +162,8 @@ public class InfoActivity extends Activity {
 
 		/**
 		 * Controla la recepción de mensajes de estado de batería.
-		 * @param objContexto  Contexto de ejecución.
-		 * @param objIntent    Intent con la información.
+		 * @param  objContexto  Contexto de ejecución.
+		 * @param  objIntent    Intent con la información.
 		 */
 		@Override
 		public void onReceive(final Context objContexto, final Intent objIntent) {
@@ -214,9 +209,8 @@ public class InfoActivity extends Activity {
 
 			if (objBateria.isModificada()) {
 				onCambio(objBateria);
+				objBateria.reiniciar();
 			}
-
-			objBateria.reiniciar();
 		}
 	}
 }
