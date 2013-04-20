@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 
 
+
 /**
  * Controlador de widget de batería.
  * @author  José Antonio Fuentes Santiago
