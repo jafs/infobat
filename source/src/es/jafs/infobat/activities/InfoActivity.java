@@ -20,8 +20,7 @@ import es.jafs.infobat.utiles.Utiles;
 /**
  * Actividad principal que gestiona el estado de la batería.
  * @author  José Antonio Fuentes Santiago
- * @version 1.0
- * @date    2013
+ * @version 1.1
  */
 public class InfoActivity extends Activity {
 	/** Receptor de información de batería. */
@@ -117,13 +116,10 @@ public class InfoActivity extends Activity {
 			// Campos complejos
 			// ----------------
 			// Nivel de la batería.
-			final StringBuilder objTexto = new StringBuilder();
-			objTexto.append(objBateria.getNivel());
-			objTexto.append('%');
-			setTexto(R.id.tvNivel, objTexto.toString());
+			setTexto(R.id.tvNivel, objBateria.getNivelString());
 
 			// Temperatura de la batería.
-			objTexto.setLength(0);
+			final StringBuilder objTexto = new StringBuilder();
 			objTexto.append(objBateria.getTemperatura());
 			objTexto.append(" ºC / ");
 			objTexto.append(Utiles.celsiusToFarhenheit(objBateria.getTemperatura()));
@@ -131,10 +127,7 @@ public class InfoActivity extends Activity {
 			setTexto(R.id.tvTemperatura, objTexto.toString());
 
 			// Voltaje de la batería.
-			objTexto.setLength(0);
-			objTexto.append(objBateria.getVoltaje());
-			objTexto.append(" V");
-			setTexto(R.id.tvVoltaje, objTexto.toString());
+			setTexto(R.id.tvVoltaje, objBateria.getVoltajeString());
 		} else {
 			tlDatos.setVisibility(View.INVISIBLE);
 			tvNoPresent.setVisibility(View.VISIBLE);
@@ -147,7 +140,7 @@ public class InfoActivity extends Activity {
 	 * el estado de la batería del sistema y realizar el tratamiento de
 	 * información.
 	 * @author  José Antonio Fuentes Santiago
-	 * @version 1.0
+	 * @version 1.1
 	 * @date    2013
 	 */
 	class Receptor extends BroadcastReceiver {
@@ -167,11 +160,13 @@ public class InfoActivity extends Activity {
 		 */
 		@Override
 		public void onReceive(final Context objContexto, final Intent objIntent) {
-			if (bInicial) {
-				cargaInicial(objIntent);
-				bInicial = false;
+			if (null != objIntent && Intent.ACTION_BATTERY_CHANGED.equals(objIntent.getAction())) {
+				if (bInicial) {
+					cargaInicial(objIntent);
+					bInicial = false;
+				}
+				obenerDatos(objIntent);
 			}
-			obenerDatos(objIntent);
 		}
 
 
@@ -180,10 +175,8 @@ public class InfoActivity extends Activity {
 		 * @param objIntent  Objeto con la información.
 		 */
 		private void cargaInicial(final Intent objIntent) {
-			if (null != objIntent) {
-				objBateria.setTecnologia(objIntent.getStringExtra(BatteryManager.EXTRA_TECHNOLOGY));
-				iEscala = objIntent.getIntExtra(BatteryManager.EXTRA_SCALE, Bateria.I_ESCALA);
-			}
+			objBateria.setTecnologia(objIntent.getStringExtra(BatteryManager.EXTRA_TECHNOLOGY));
+			iEscala = objIntent.getIntExtra(BatteryManager.EXTRA_SCALE, Bateria.I_ESCALA);
 		}
 
 
@@ -192,19 +185,15 @@ public class InfoActivity extends Activity {
 		 * @param objIntent  Objeto con la información.
 		 */
 		private void obenerDatos(final Intent objIntent) {
-			if (null != objIntent) {
-				objBateria.setPresente(objIntent.getBooleanExtra(BatteryManager.EXTRA_PRESENT, false));
+			objBateria.setPresente(objIntent.getBooleanExtra(BatteryManager.EXTRA_PRESENT, false));
 
-				if (objBateria.isPresente()) {
-					objBateria.setNivel(objIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0), iEscala);
-					objBateria.setConectada(objIntent.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0));
-					objBateria.setSalud(objIntent.getIntExtra(BatteryManager.EXTRA_HEALTH, 1));
-					objBateria.setTemperatura(objIntent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0));
-					objBateria.setVoltaje(objIntent.getIntExtra(BatteryManager.EXTRA_VOLTAGE, 0));
-					objBateria.setEstado(objIntent.getIntExtra(BatteryManager.EXTRA_STATUS, 0));
-				}
-			} else {
-				objBateria.setPresente(false);
+			if (objBateria.isPresente()) {
+				objBateria.setNivel(objIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0), iEscala);
+				objBateria.setConectada(objIntent.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0));
+				objBateria.setSalud(objIntent.getIntExtra(BatteryManager.EXTRA_HEALTH, 1));
+				objBateria.setTemperatura(objIntent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0));
+				objBateria.setVoltaje(objIntent.getIntExtra(BatteryManager.EXTRA_VOLTAGE, 0));
+				objBateria.setEstado(objIntent.getIntExtra(BatteryManager.EXTRA_STATUS, 0));
 			}
 
 			if (objBateria.isModificada()) {

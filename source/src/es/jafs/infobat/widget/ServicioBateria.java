@@ -19,8 +19,7 @@ import es.jafs.infobat.clases.Bateria;
 /**
  * Servicio encargado de actualizar el widget de batería.
  * @author  José Antonio Fuentes Santiago
- * @version 1.0
- * @date    2013
+ * @version 1.1
  */
 public class ServicioBateria extends Service {
 	/** Propiedad de imagen de fondo. */
@@ -40,6 +39,8 @@ public class ServicioBateria extends Service {
 	private int iNivelBateria = -1;
 	/** Indica cuando se debe realizar una inicialización. */
 	private boolean bInicializar = true;
+	/** Gestor de nombres de componentes. */
+	private ComponentName objComponente = null;
 
 
 	/**
@@ -130,26 +131,11 @@ public class ServicioBateria extends Service {
 
 
 	/**
-	 * Actualiza los widget de la aplicación.
+	 * Actualiza los widgets existentes.
 	 * @param  objContexto  Contexto de la aplicación.
-	 * @param  iIdWidget    Identificador del widget.
 	 */
-	public static void actualizarWidget(final Context objContexto, final int iIdWidget) {
-		if (objInstancia != null) {
-			objInstancia.recibirBateria(null);
-			objInstancia.actualizarWidget(objContexto, AppWidgetManager.getInstance(objContexto), iIdWidget);
-		}
-	}
-
-
-	/**
-	 * Actualiza los widgets de la aplicación.
-	 * @param objContexto  Contexto de la aplicación.
-	 * @param objManager   Administrador de widgets.
-	 * @param iIdWidget    Identificador del widget.
-	 */
-	private void actualizarWidget(final Context objContexto, final AppWidgetManager objManager,
-									final int iIdWidget) {
+	public void actualizarWidgets(final Context objContexto) {
+		final AppWidgetManager objGestor = AppWidgetManager.getInstance(objContexto);
 		final RemoteViews objVistas = new RemoteViews(objContexto.getPackageName(), R.layout.widget);
 
 		// Prepara el clic sobre el widget para lanza la actividad principal.
@@ -169,22 +155,8 @@ public class ServicioBateria extends Service {
 			objVistas.setInt(R.id.llFondo, PROP_FONDO, R.drawable.wdg_normal);
 		}
 
-		objVistas.setTextViewText(R.id.tvNivelWidget, Integer.toString(iNivelBateria));
-		objManager.updateAppWidget(iIdWidget, objVistas);
-	}
-
-
-	/**
-	 * Actualiza los widgets existentes.
-	 * @param  objContexto  Contexto de la aplicación.
-	 */
-	public void actualizarWidgets(final Context objContexto) {
-		final AppWidgetManager objGestor = AppWidgetManager.getInstance(objContexto);
-		final int[] ariIds = objGestor.getAppWidgetIds(new ComponentName(objContexto, WidgetBateria.class));
-
-		for (final int iActual : ariIds) {
-			actualizarWidget(objContexto, objGestor, iActual);
-		}
+		objVistas.setTextViewText(R.id.tvNivelWidget, Integer.toString(iNivelBateria) + "%");
+		objGestor.updateAppWidget(objComponente, objVistas);
 	}
 
 
@@ -206,6 +178,10 @@ public class ServicioBateria extends Service {
 	public void onDestroy() {
 		cancelarPantalla();
 		cancelarBateria();
+
+		bInicializar = true;
+		objInstancia = null;
+
 		super.onDestroy();
 	}
 
@@ -220,6 +196,8 @@ public class ServicioBateria extends Service {
 	public int onStartCommand(final Intent objIntent, final int iFlags, int iParam) {
 		if (bInicializar) {
 			objInstancia = this;
+			objComponente = new ComponentName(getApplicationContext(), WidgetBateria.class);
+
 			registrarPantalla();
 			registrarBateria();
 			actualizarWidgets(getApplicationContext());

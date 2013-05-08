@@ -7,14 +7,13 @@ import android.os.BatteryManager;
 /**
  * Clase que almacena información sobre la batería del sistema.
  * @author  José Antonio Fuentes Santiago
- * @version 1.0
- * @date    2013
+ * @version 1.1
  */
 public final class Bateria {
 	/** Valor de escala por defecto para el nivel de batería. */
 	public static final int I_ESCALA = 100;
 	/** Nivel de peligro. */
-	public static final int NVL_DANGER = 10;
+	public static final int NVL_DANGER = 15;
 	/** Nivel de advertencia. */
 	public static final int NVL_WARNING = 30;
 
@@ -91,6 +90,15 @@ public final class Bateria {
 
 
 	/**
+	 * Obtiene una cadena con el nivel de batería.
+	 * @return Cadena con el nivel de batería y el símbolo de porcentaje.
+	 */
+	public final String getNivelString() {
+		return iNivel + "%";
+	}
+
+
+	/**
 	 * Obtiene el nivel de la batería, a partir de un valor y la escala.
 	 * @param  iActual  Valor del nivel de batería.
 	 * @param  iEscala  Escala en la que se basa.
@@ -152,6 +160,15 @@ public final class Bateria {
 	 */
 	public final float getVoltaje() {
 		return fVoltaje;
+	}
+
+
+	/**
+	 * Obtiene una cadena con el valor de voltaje actual.
+	 * @return Cadena con el voltaje de la batería.
+	 */
+	public final String getVoltajeString() {
+		return fVoltaje + "V";
 	}
 
 
