@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="bat_nivel">Nivel: </string>
-	<string name="bat_enchufada">Cable: </string>
-	<string name="bat_salud">Salud: </string>
-	<string name="bat_estado">Estado: </string>
-	<string name="bat_temperatura">Temperatura: </string>
-	<string name="bat_voltaje">Voltaje: </string>
-	<string name="bat_tecnologia">Tecnología: </string>
-	<string name="bat_no_presente">Batería no presente</string>
+	<string name="bat_nivel">Level: </string>
+	<string name="bat_enchufada">Plugged: </string>
+	<string name="bat_salud">Health: </string>
+	<string name="bat_estado">Status: </string>
+	<string name="bat_temperatura">Temperature: </string>
+	<string name="bat_voltaje">Voltage: </string>
+	<string name="bat_tecnologia">Tecnology: </string>
+	<string name="bat_no_presente">Batery not present</string>
 
-	<string name="bat_con_corrient">Conectado a AC</string>
-	<string name="bat_con_usb">Conectado a USB</string>
-	<string name="bat_con_des">Desconectado</string>
+	<string name="bat_con_corrient">Plugged to AC</string>
+	<string name="bat_con_usb">Plugged to USB</string>
+	<string name="bat_con_des">Disconnected</string>
 
-	<string name="bat_sal_muerta">Muerta</string>
-	<string name="bat_sal_buena">Correcta</string>
-	<string name="bat_sal_caliente">Sobrecalentada</string>
-	<string name="bat_sal_voltaje">Sobretensión</string>
-	<string name="bat_sal_desconocida">Desconocida</string>
-	<string name="bat_sal_fallo">Fallo no especificado</string>
+	<string name="bat_sal_muerta">Dead</string>
+	<string name="bat_sal_buena">Good</string>
+	<string name="bat_sal_caliente">Overheat</string>
+	<string name="bat_sal_voltaje">Over voltage</string>
+	<string name="bat_sal_desconocida">Unknown</string>
+	<string name="bat_sal_fallo">Unspecified failure</string>
 
-	<string name="bat_est_cargando">Cargando</string>
-	<string name="bat_est_descargando">Descargando</string>
-	<string name="bat_est_llena">Llena</string>
-	<string name="bat_est_no_cargando">No cargando</string>
-	<string name="bat_est_desconocido">Desconocido</string>
+	<string name="bat_est_cargando">Charging</string>
+	<string name="bat_est_descargando">Discharging</string>
+	<string name="bat_est_llena">Full</string>
+	<string name="bat_est_no_cargando">Not charging</string>
+	<string name="bat_est_desconocido">Unknown</string>
 
 	<string name="cerrar">Cerrar</string>
 </resources>
