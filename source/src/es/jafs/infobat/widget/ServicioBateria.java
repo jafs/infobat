@@ -15,6 +15,12 @@ import es.jafs.infobat.activities.InfoActivity;
 import es.jafs.infobat.clases.Bateria;
 
 
+
+/**
+ * Servicio encargado de actualizar el widget de batería.
+ * @author  José Antonio Fuentes Santiago
+ * @version 1.1
+ */
 public class ServicioBateria extends Service {
 	/** Propiedad de imagen de fondo. */
 	private static final String PROP_FONDO = "setBackgroundResource";
@@ -28,15 +34,18 @@ public class ServicioBateria extends Service {
 	private ReceptorPantalla mScreenStateReceiver;
 
 	/** Indica si se está cargando. */
-	private boolean bConectado = false;
+	private boolean bCargando = false;
 	/** Nivel de batería. */
 	private int iNivelBateria = -1;
+	/** Indica cuando se debe realizar una inicialización. */
 	private boolean bInicializar = true;
+	/** Gestor de nombres de componentes. */
+	private ComponentName objComponente = null;
 
 
 	/**
 	 * Devuelve la instancia de la clase.
-	 * @return
+	 * @return Instancia de la clase.
 	 */
 	public static ServicioBateria getInstancia() {
 		return objInstancia;
@@ -113,58 +122,11 @@ public class ServicioBateria extends Service {
 		}
 
 		// Obtiene el nivel de batería.
-		final int iNivel = objIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
-		final int iEscala = objIntent.getIntExtra(BatteryManager.EXTRA_SCALE, Bateria.I_ESCALA);
-		iNivelBateria = Bateria.getNivel(iNivel, iEscala);
+		iNivelBateria = Bateria.getNivel(objIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0),
+										objIntent.getIntExtra(BatteryManager.EXTRA_SCALE, Bateria.I_ESCALA));
 
 		// Obtiene el estado de conexión de la batería.
-		final int iEstado = objIntent.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0);
-		bConectado = (iEstado > 0 && iNivelBateria < 100);	
-	}
-
-
-	/**
-	 * Actualiza los widget de la aplicación.
-	 * @param  objContexto  Contexto de la aplicación.
-	 * @param  iIdWidget    Identificador del widget.
-	 */
-	public static void actualizarWidget(final Context objContexto, final int iIdWidget) {
-		if (objInstancia != null) {
-			objInstancia.recibirBateria(null);
-			objInstancia.actualizarWidget(objContexto, AppWidgetManager.getInstance(objContexto), iIdWidget);
-		}
-	}
-
-
-	/**
-	 * Actualiza los widgets de la aplicación.
-	 * @param objContexto  Contexto de la aplicación.
-	 * @param objManager   Administrador de widgets.
-	 * @param iIdWidget    Identificador del widget.
-	 */
-	private void actualizarWidget(Context objContexto, AppWidgetManager objManager, int iIdWidget) {
-		final RemoteViews objVistas = new RemoteViews(objContexto.getPackageName(), R.layout.widget);
-
-		// Prepara el clic sobre el widget para lanza la actividad principal.
-		final Intent objIntentLanza = new Intent();
-		objIntentLanza.setClass(objContexto, InfoActivity.class);
-		final PendingIntent objPendiente = PendingIntent.getActivity(objContexto, 0, objIntentLanza, 0);
-		objVistas.setOnClickPendingIntent(R.id.llFondo, objPendiente);
-
-		// Cambia el fondo del widget dependiendo del estado.
-		// TODO revisar código para evitar que se dibuje innecesariamente.
-		if (bConectado) {
-			objVistas.setInt(R.id.llFondo, PROP_FONDO, R.drawable.wdg_carga);
-		} else if (iNivelBateria < Bateria.NVL_WARNING) {
-			objVistas.setInt(R.id.llFondo, PROP_FONDO, R.drawable.wdg_warning);
-		} else if (iNivelBateria < Bateria.NVL_DANGER) {
-			objVistas.setInt(R.id.llFondo, PROP_FONDO, R.drawable.wdg_danger);
-		} else {
-			objVistas.setInt(R.id.llFondo, PROP_FONDO, R.drawable.wdg_normal);
-		}
-
-		objVistas.setTextViewText(R.id.tvNivelWidget, Integer.toString(iNivelBateria));
-		objManager.updateAppWidget(iIdWidget, objVistas);
+		bCargando = (objIntent.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0) > 0 && iNivelBateria < 100);
 	}
 
 
@@ -174,11 +136,27 @@ public class ServicioBateria extends Service {
 	 */
 	public void actualizarWidgets(final Context objContexto) {
 		final AppWidgetManager objGestor = AppWidgetManager.getInstance(objContexto);
-		final int[] ariIds = objGestor.getAppWidgetIds(new ComponentName(objContexto, WidgetBateria.class));
+		final RemoteViews objVistas = new RemoteViews(objContexto.getPackageName(), R.layout.widget);
 
-		for (final int iActual : ariIds) {
-			actualizarWidget(objContexto, objGestor, iActual);
+		// Prepara el clic sobre el widget para lanza la actividad principal.
+		final Intent objIntentLanza = new Intent();
+		objIntentLanza.setClass(objContexto, InfoActivity.class);
+		final PendingIntent objPendiente = PendingIntent.getActivity(objContexto, 0, objIntentLanza, 0);
+		objVistas.setOnClickPendingIntent(R.id.llFondo, objPendiente);
+
+		// Cambia el fondo del widget dependiendo del estado.
+		if (bCargando) {
+			objVistas.setInt(R.id.llFondo, PROP_FONDO, R.drawable.wdg_carga);
+		} else if (iNivelBateria <= Bateria.NVL_DANGER) {
+			objVistas.setInt(R.id.llFondo, PROP_FONDO, R.drawable.wdg_danger);
+		} else if (iNivelBateria <= Bateria.NVL_WARNING) {
+			objVistas.setInt(R.id.llFondo, PROP_FONDO, R.drawable.wdg_warning);
+		} else {
+			objVistas.setInt(R.id.llFondo, PROP_FONDO, R.drawable.wdg_normal);
 		}
+
+		objVistas.setTextViewText(R.id.tvNivelWidget, Integer.toString(iNivelBateria) + "%");
+		objGestor.updateAppWidget(objComponente, objVistas);
 	}
 
 
@@ -200,6 +178,10 @@ public class ServicioBateria extends Service {
 	public void onDestroy() {
 		cancelarPantalla();
 		cancelarBateria();
+
+		bInicializar = true;
+		objInstancia = null;
+
 		super.onDestroy();
 	}
 
@@ -214,10 +196,10 @@ public class ServicioBateria extends Service {
 	public int onStartCommand(final Intent objIntent, final int iFlags, int iParam) {
 		if (bInicializar) {
 			objInstancia = this;
+			objComponente = new ComponentName(getApplicationContext(), WidgetBateria.class);
 
 			registrarPantalla();
 			registrarBateria();
-
 			actualizarWidgets(getApplicationContext());
 		}
 

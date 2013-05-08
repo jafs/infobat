@@ -1,6 +1,7 @@
 package es.jafs.infobat.utiles;
 
 
+
 /**
  * Clase que contiene métodos con diversas utilidades.
  * @author  José Antonio Fuentes Santiago
