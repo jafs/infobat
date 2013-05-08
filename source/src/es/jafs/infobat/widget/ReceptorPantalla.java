@@ -19,7 +19,7 @@ public class ReceptorPantalla extends BroadcastReceiver {
 	 * @param  objIntent    Intent de la emisión broadcast.
 	 */
 	@Override
-	public void onReceive(Context objContexto, Intent objIntent) {
+	public void onReceive(final Context objContexto, final Intent objIntent) {
 		if (null != ServicioBateria.getInstancia()) {
 			if (Intent.ACTION_SCREEN_ON.equals(objIntent.getAction())) {
 				ServicioBateria.getInstancia().registrarBateria();

@@ -3,23 +3,26 @@ package es.jafs.infobat.clases;
 import android.os.BatteryManager;
 
 
+
 /**
  * Clase que almacena información sobre la batería del sistema.
- *
- * @author jafsantiago
+ * @author  José Antonio Fuentes Santiago
+ * @version 1.1
  */
 public final class Bateria {
 	/** Valor de escala por defecto para el nivel de batería. */
 	public static final int I_ESCALA = 100;
+	/** Nivel de peligro. */
+	public static final int NVL_DANGER = 15;
+	/** Nivel de advertencia. */
+	public static final int NVL_WARNING = 30;
+
 	/** Valor divisor de voltaje. */
 	private static final int DIV_VOLTAJE = 1000;
 	/** Indica el valor de porcentaje. */
 	private static final int PORCENTAJE = 100;
 	/** Valor divisor de temperatura. */
 	private static final int DIV_TEMPERATURA = 10;
-	
-	public static final int NVL_DANGER = 5;
-	public static final int NVL_WARNING = 20;
 
 	/** Estado de salud de la batería. */
 	private int iSalud = BatteryManager.BATTERY_HEALTH_UNKNOWN;
@@ -45,7 +48,7 @@ public final class Bateria {
 	 * Establece un valor que indica el estado de conexión de la batería.
 	 * @param iConect  Estado de conexión de la batería.
 	 */
-	public void setConectada(final int iConect) {
+	public final void setConectada(final int iConect) {
 		if (iConect != iConectada) {
 			bModificada = true;
 			iConectada = iConect;
@@ -55,26 +58,20 @@ public final class Bateria {
 
 	/**
 	 * Obtiene un valor que indica el estado de conexión de la batería.
-	 * @return int
+	 * @return Valor entero que indica el estado de conexión de la batería.
 	 */
-	public int getConectada() {
+	public final int getConectada() {
 		return iConectada;
 	}
 
 
 	/**
 	 * Establece el nivel de la batería, a partir de un valor y la escala.
-	 * @param iActual  Valor del nivel de batería.
-	 * @param iEscala  Escala en la que se basa.
+	 * @param  iActual  Valor del nivel de batería.
+	 * @param  iEscala  Escala en la que se basa.
 	 */
-	public void setNivel(final int iActual, final int iEscala) {
-		int iTemporal = 0;
-
-		if (iEscala > 0) {
-			iTemporal = iActual * PORCENTAJE / iEscala;
-		} else {
-			iTemporal = iActual;
-		}
+	public final void setNivel(final int iActual, final int iEscala) {
+		final int iTemporal = getNivel(iActual, iEscala);
 
 		if (iNivel != iTemporal) {
 			bModificada = true;
@@ -85,17 +82,26 @@ public final class Bateria {
 
 	/**
 	 * Obtiene el nivel de carga de la batería.
-	 * @return int
+	 * @return Valor entero con el nivel de batería.
 	 */
-	public int getNivel() {
+	public final int getNivel() {
 		return iNivel;
 	}
 
 
 	/**
+	 * Obtiene una cadena con el nivel de batería.
+	 * @return Cadena con el nivel de batería y el símbolo de porcentaje.
+	 */
+	public final String getNivelString() {
+		return iNivel + "%";
+	}
+
+
+	/**
 	 * Obtiene el nivel de la batería, a partir de un valor y la escala.
-	 * @param iActual  Valor del nivel de batería.
-	 * @param iEscala  Escala en la que se basa.
+	 * @param  iActual  Valor del nivel de batería.
+	 * @param  iEscala  Escala en la que se basa.
 	 * @return Entero con el valor del nivel actual de la batería o -1.
 	 */
 	public static int getNivel(final int iActual, final int iEscala) {
@@ -113,9 +119,9 @@ public final class Bateria {
 
 	/**
 	 * Establece el valor de temperatura actual.
-	 * @param iTemperatura  Valor de temperatura.
+	 * @param  iTemperatura  Valor de temperatura.
 	 */
-	public void setTemperatura(final int iTemperatura) {
+	public final void setTemperatura(final int iTemperatura) {
 		float fTemporal = Float.valueOf(iTemperatura) / DIV_TEMPERATURA;
 
 		if (fTemporal != fTemperatura) {
@@ -127,18 +133,18 @@ public final class Bateria {
 
 	/**
 	 * Obtiene el valor de temperatura actual.
-	 * @return float
+	 * @return Valor real con la temperatura de la batería.
 	 */
-	public float getTemperatura() {
+	public final float getTemperatura() {
 		return fTemperatura;
 	}
 
 
 	/**
 	 * Establece el valor de voltaje actual.
-	 * @param iVoltaje  Valor de voltaje en mV.
+	 * @param  iVoltaje  Valor de voltaje en mV.
 	 */
-	public void setVoltaje(final int iVoltaje) {
+	public final void setVoltaje(final int iVoltaje) {
 		float fTemporal = Float.valueOf(iVoltaje) / DIV_VOLTAJE;
 
 		if  (fTemporal != fVoltaje) {
@@ -150,18 +156,27 @@ public final class Bateria {
 
 	/**
 	 * Obtiene el valor de voltaje actual.
-	 * @return float
+	 * @return Valor real con el voltaje de la batería.
 	 */
-	public float getVoltaje() {
+	public final float getVoltaje() {
 		return fVoltaje;
 	}
 
 
 	/**
-	 * Establece el estado de salud de la batería.
-	 * @param iEstSalud  Estado de salud de la batería.
+	 * Obtiene una cadena con el valor de voltaje actual.
+	 * @return Cadena con el voltaje de la batería.
 	 */
-	public void setSalud(final int iEstSalud) {
+	public final String getVoltajeString() {
+		return fVoltaje + "V";
+	}
+
+
+	/**
+	 * Establece el estado de salud de la batería.
+	 * @param  iEstSalud  Estado de salud de la batería.
+	 */
+	public final void setSalud(final int iEstSalud) {
 		if (iEstSalud != iSalud) {
 			bModificada = true;
 			iSalud = iEstSalud;
@@ -171,18 +186,18 @@ public final class Bateria {
 
 	/**
 	 * Obtiene el estado de salud de la batería.
-	 * @return int.
+	 * @return Entero con el estado de salud de la batería.
 	 */
-	public int getSalud() {
+	public final int getSalud() {
 		return iSalud;
 	}
 
 
 	/**
 	 * Establece el valor que indica si la batería está presente.
-	 * @param bPresent  Valor que indica si la batería está presente.
+	 * @param  bPresent  Valor que indica si la batería está presente.
 	 */
-	public void setPresente(final boolean bPresent) {
+	public final void setPresente(final boolean bPresent) {
 		if (bPresent != bPresente) {
 			bModificada = true;
 			bPresente = bPresent;
@@ -192,9 +207,9 @@ public final class Bateria {
 
 	/**
 	 * Obtiene el valor que indica si la batería está presente.
-	 * @return boolean
+	 * @return Valor booleano que indica si está presente la batería.
 	 */
-	public boolean isPresente() {
+	public final boolean isPresente() {
 		return bPresente;
 	}
 
@@ -203,7 +218,7 @@ public final class Bateria {
 	 * Establece el valor de estado de la batería.
 	 * @param iEstad  Valor de estado de la batería.
 	 */
-	public void setEstado(final int iEstad) {
+	public final void setEstado(final int iEstad) {
 		if (iEstad != iEstado) {
 			bModificada = true;
 			iEstado = iEstad;
@@ -213,9 +228,9 @@ public final class Bateria {
 
 	/**
 	 * Obtiene el valor de estado de la batería.
-	 * @return int
+	 * @return ENtero con el estado de la batería.
 	 */
-	public int getEstado() {
+	public final int getEstado() {
 		return iEstado;
 	}
 
@@ -224,8 +239,8 @@ public final class Bateria {
 	 * Establece la tecnología de la batería.
 	 * @param sTecno  Tecnología de la batería.
 	 */
-	public void setTecnologia(final String sTecno) {
-		if (!sTecno.equals(sTecnologia)) {
+	public final void setTecnologia(final String sTecno) {
+		if (null != sTecno && !sTecno.equals(sTecnologia)) {
 			bModificada = true;
 			sTecnologia = sTecno;
 		}
@@ -234,16 +249,16 @@ public final class Bateria {
 
 	/**
 	 * Obtiene el nombre de la tecnología de la batería.
-	 * @return String
+	 * @return Cadena con la tecnología de la batería.
 	 */
-	public String getTecnologia() {
+	public final String getTecnologia() {
 		return sTecnologia;
 	}
 
 
 	/**
 	 * Obtiene un valor que indica si alguno de los parámetros ha sido modificados.
-	 * @return  boolean
+	 * @return Valor booleano que indica si algún parámetro ha sido modificado.
 	 */
 	public boolean isModificada() {
 		return bModificada;
