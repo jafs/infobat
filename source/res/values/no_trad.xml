@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">Infobat</string>
-	<string name="version">1.1</string>
-	<string name="app_name_ver">InfoBat 1.1</string>
+	<string name="version">1.1.1</string>
 	<string name="app_license">(CC) Creative Commons 2013, JAFS.es</string>
 
 	<string name="wd_defecto">0%</string>
